@@ -1,0 +1,289 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		26F52E041974D2A700571884 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26F52E031974D2A700571884 /* AppKit.framework */; };
+		26F52E061974D2A700571884 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26F52E051974D2A700571884 /* Foundation.framework */; };
+		26F52E0C1974D2A700571884 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 26F52E0A1974D2A700571884 /* InfoPlist.strings */; };
+		26F52E0F1974D2A700571884 /* FasterBuild.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F52E0E1974D2A700571884 /* FasterBuild.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		26F52E001974D2A700571884 /* FasterBuild.xcplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FasterBuild.xcplugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		26F52E031974D2A700571884 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		26F52E051974D2A700571884 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		26F52E091974D2A700571884 /* FasterBuild-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FasterBuild-Info.plist"; sourceTree = "<group>"; };
+		26F52E0B1974D2A700571884 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		26F52E0D1974D2A700571884 /* FasterBuild.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasterBuild.h; sourceTree = "<group>"; };
+		26F52E0E1974D2A700571884 /* FasterBuild.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasterBuild.m; sourceTree = "<group>"; };
+		26F52E101974D2A700571884 /* FasterBuild-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FasterBuild-Prefix.pch"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		26F52DFD1974D2A700571884 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26F52E041974D2A700571884 /* AppKit.framework in Frameworks */,
+				26F52E061974D2A700571884 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		26F52DF71974D2A700571884 = {
+			isa = PBXGroup;
+			children = (
+				26F52E071974D2A700571884 /* FasterBuild */,
+				26F52E021974D2A700571884 /* Frameworks */,
+				26F52E011974D2A700571884 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		26F52E011974D2A700571884 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				26F52E001974D2A700571884 /* FasterBuild.xcplugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		26F52E021974D2A700571884 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				26F52E031974D2A700571884 /* AppKit.framework */,
+				26F52E051974D2A700571884 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		26F52E071974D2A700571884 /* FasterBuild */ = {
+			isa = PBXGroup;
+			children = (
+				26F52E0D1974D2A700571884 /* FasterBuild.h */,
+				26F52E0E1974D2A700571884 /* FasterBuild.m */,
+				26F52E081974D2A700571884 /* Supporting Files */,
+			);
+			path = FasterBuild;
+			sourceTree = "<group>";
+		};
+		26F52E081974D2A700571884 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				26F52E091974D2A700571884 /* FasterBuild-Info.plist */,
+				26F52E0A1974D2A700571884 /* InfoPlist.strings */,
+				26F52E101974D2A700571884 /* FasterBuild-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		26F52DFF1974D2A700571884 /* FasterBuild */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 26F52E131974D2A700571884 /* Build configuration list for PBXNativeTarget "FasterBuild" */;
+			buildPhases = (
+				26F52DFC1974D2A700571884 /* Sources */,
+				26F52DFD1974D2A700571884 /* Frameworks */,
+				26F52DFE1974D2A700571884 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FasterBuild;
+			productName = FasterBuild;
+			productReference = 26F52E001974D2A700571884 /* FasterBuild.xcplugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		26F52DF81974D2A700571884 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "Nicolas Flacco";
+			};
+			buildConfigurationList = 26F52DFB1974D2A700571884 /* Build configuration list for PBXProject "FasterBuild" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 26F52DF71974D2A700571884;
+			productRefGroup = 26F52E011974D2A700571884 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				26F52DFF1974D2A700571884 /* FasterBuild */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		26F52DFE1974D2A700571884 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26F52E0C1974D2A700571884 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		26F52DFC1974D2A700571884 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26F52E0F1974D2A700571884 /* FasterBuild.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		26F52E0A1974D2A700571884 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				26F52E0B1974D2A700571884 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		26F52E111974D2A700571884 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		26F52E121974D2A700571884 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		26F52E141974D2A700571884 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = "$(HOME)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "FasterBuild/FasterBuild-Prefix.pch";
+				INFOPLIST_FILE = "FasterBuild/FasterBuild-Info.plist";
+				INSTALL_PATH = "/Library/Application Support/Developer/Shared/Xcode/Plug-ins";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xcplugin;
+			};
+			name = Debug;
+		};
+		26F52E151974D2A700571884 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = "$(HOME)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "FasterBuild/FasterBuild-Prefix.pch";
+				INFOPLIST_FILE = "FasterBuild/FasterBuild-Info.plist";
+				INSTALL_PATH = "/Library/Application Support/Developer/Shared/Xcode/Plug-ins";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xcplugin;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		26F52DFB1974D2A700571884 /* Build configuration list for PBXProject "FasterBuild" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26F52E111974D2A700571884 /* Debug */,
+				26F52E121974D2A700571884 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		26F52E131974D2A700571884 /* Build configuration list for PBXNativeTarget "FasterBuild" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26F52E141974D2A700571884 /* Debug */,
+				26F52E151974D2A700571884 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 26F52DF81974D2A700571884 /* Project object */;
+}
