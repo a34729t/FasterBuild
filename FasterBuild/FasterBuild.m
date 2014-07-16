@@ -15,6 +15,8 @@ static FasterBuild *sharedPlugin;
 @interface FasterBuild()
 
 @property (nonatomic, strong) NSBundle *bundle;
+@property (nonatomic, strong) NSMenuItem *actionMenuItem;
+
 @end
 
 @implementation FasterBuild
@@ -38,19 +40,19 @@ static FasterBuild *sharedPlugin;
         
         // Create menu items, initialize UI, etc.
 
+        // Property for fast build menu item
+        self.actionMenuItem = [[NSMenuItem alloc] initWithTitle:@"untitled" action:@selector(toggleFasterBuild) keyEquivalent:@""];
+        [self.actionMenuItem setTarget:self];
         
-        // TODO: Get menu item current value from [[NSBundle mainBundle] infoDictionary]
-        
-        [self toggleMenu:NO]; // default is Off
-        
-        // Sample Menu Item:
+        // Add a separator at bottom of menu
         NSMenuItem *menuItem = [[NSApp mainMenu] itemWithTitle:@"Product"];
         if (menuItem) {
             [[menuItem submenu] addItem:[NSMenuItem separatorItem]];
-            NSMenuItem *actionMenuItem = [[NSMenuItem alloc] initWithTitle:@"Enable Fast Build" action:@selector(doMenuAction) keyEquivalent:@""];
-            [actionMenuItem setTarget:self];
-            [[menuItem submenu] addItem:actionMenuItem];
+            [[menuItem submenu] addItem:self.actionMenuItem];
         }
+        
+        // Init menu
+        [self toggleMenu:NO]; // default is Off
     }
     return self;
 }
@@ -60,14 +62,15 @@ static FasterBuild *sharedPlugin;
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if (on) {
         [userDefaults setBool:YES forKey:FasterBuildKey];
+        self.actionMenuItem.title = @"Disable Fast Build";
     } else {
         [userDefaults setBool:NO forKey:FasterBuildKey];
+        self.actionMenuItem.title = @"Enable Fast Build";
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-// Sample Action, for menu item:
-- (void)doMenuAction
+- (void)toggleFasterBuild
 {
     BOOL on = [[NSUserDefaults standardUserDefaults] boolForKey:FasterBuildKey];
     [self toggleMenu:!on];
@@ -82,6 +85,9 @@ static FasterBuild *sharedPlugin;
     [alert runModal];
     
     // TODO: Run an NSTask to modify project on a line-item basis
+    
+    
+    
 }
 
 - (void)dealloc
