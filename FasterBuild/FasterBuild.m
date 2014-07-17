@@ -10,6 +10,10 @@
 
 #define FasterBuildKey @"FasterBuild"
 
+
+#define DEBUG_INFO_OFF              @"DEBUG_INFORMATION_FORMAT = \"dwarf\";"
+#define DEBUG_INFO_ON               @"DEBUG_INFORMATION_FORMAT = \"dwarf-with-dsym\";"
+
 static FasterBuild *sharedPlugin;
 
 @interface FasterBuild()
@@ -52,87 +56,86 @@ static FasterBuild *sharedPlugin;
         }
         
         // Init menu
-        [self toggleMenu:NO]; // default is Off
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:FasterBuildKey];
+        [self toggleFasterBuild];
     }
     return self;
 }
 
-- (void)toggleMenu:(BOOL)on
-{
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    if (on) {
-        [userDefaults setBool:YES forKey:FasterBuildKey];
-        self.actionMenuItem.title = @"Disable Fast Build";
-    } else {
-        [userDefaults setBool:NO forKey:FasterBuildKey];
-        self.actionMenuItem.title = @"Enable Fast Build";
-    }
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
 - (void)toggleFasterBuild
 {
-    BOOL on = [[NSUserDefaults standardUserDefaults] boolForKey:FasterBuildKey];
-    [self toggleMenu:!on];
     NSString *workspacePath = [self currentProjectPath];
-
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    BOOL on = [userDefaults boolForKey:FasterBuildKey];
     
-    // TODO: Run an NSTask to modify project on a line-item basis
-    // 1. Print out the path of the current project's project files
-    
-    
-    
-    // 2. Do line item changes
-    if (on) {
-        [self lineItemReplace:@"DEBUG_INFORMATION_FORMAT = \"dwarf-with-dsym\";" with:@"DEBUG_INFORMATION_FORMAT = \"dwarf\";" path:workspacePath];
+    if (!on) { // Starting state, turn on
+        [userDefaults setBool:YES forKey:FasterBuildKey];
+        self.actionMenuItem.title = @"Enable Fast Build";
+        [self lineItemReplace:DEBUG_INFO_OFF with:DEBUG_INFO_ON path:workspacePath];
     } else {
-        [self lineItemReplace:@"DEBUG_INFORMATION_FORMAT = \"dwarf\";" with:@"DEBUG_INFORMATION_FORMAT = \"dwarf-with-dsym\";" path:workspacePath];
+        [userDefaults setBool:NO forKey:FasterBuildKey];
+        self.actionMenuItem.title = @"Disable Fast Build";
+        [self lineItemReplace:DEBUG_INFO_ON with:DEBUG_INFO_OFF path:workspacePath];
     }
     
-//    NSString *msg;
-//    if (on) {
-//        msg = @"On!";
-//    } else {
-//        msg = @"Off!";
-//    }
-//    NSAlert *alert = [NSAlert alertWithMessageText:msg defaultButton:nil alternateButton:nil otherButton:nil informativeTextWithFormat:@""];
-//    [alert runModal];
-    
-}
-
-- (void)lineItemReplace:(NSString *)old with:(NSString *)new path:(NSString *)workspacePath
-{
-    // In theory, trying to do this
-    // http://stackoverflow.com/questions/24774122/nstask-calling-perl-and-piping-in-find-not-working
-    
-    // But it doesn't work!
-    NSTask *task = [[NSTask alloc] init];
-    [task setLaunchPath:@"/bin/sh"];
-    NSString *regex = [NSString stringWithFormat:@"'s/%@/%@/g'", old, new];
-    NSString *pathArg = [NSString stringWithFormat:@"`find %@ -name *.pbxproj`", workspacePath];
-    [task setArguments:@[ @"/usr/bin/perl", @"-p", @"-i", @"-e", regex, pathArg]];
-    [task launch];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSString *)currentProjectPath
 {
+    // This gets you something like:
+    //  /Users/nflacco/Projects/ios/alcatraz/FasterBuild/FasterBuild.xcodeproj
     // See http://stackoverflow.com/questions/21054699/get-the-path-of-current-project-opened-in-xcode-plugin
     
     NSArray *workspaceWindowControllers = [NSClassFromString(@"IDEWorkspaceWindowController") valueForKey:@"workspaceWindowControllers"];
-    
     id workSpace;
     for (id controller in workspaceWindowControllers) {
         if ([[controller valueForKey:@"window"] isEqual:[NSApp keyWindow]]) {
             workSpace = [controller valueForKey:@"_workspace"];
         }
     }
+
+    return [[workSpace valueForKey:@"representingFilePath"] valueForKey:@"_pathString"];
+}
+
+
+- (void)lineItemReplace:(NSString *)old with:(NSString *)new path:(NSString *)workspacePath
+{
+    // For example: perl -p -i -e 's/[OLD]/[NEW]/g' `find . -name *.pbxproj`
+    NSString *command = [NSString stringWithFormat:@"perl -p -i -e 's/%@/%@/g' `find %@ -name *.pbxproj`", old, new, workspacePath];
+    [self runCommand:command];
+}
+
+- (NSString *)runCommand:(NSString *)commandToRun
+{
+    // From http://stackoverflow.com/a/12310154/581135
+    // Other methods didn't seem to work in Xcode, but worked as a regular terminal app!
+    NSTask *task;
+    task = [[NSTask alloc] init];
+    [task setLaunchPath: @"/bin/sh"];
     
-    NSString *workspacePath = [[workSpace valueForKey:@"representingFilePath"] valueForKey:@"_pathString"];
+    NSArray *arguments = [NSArray arrayWithObjects:
+                          @"-c" ,
+                          [NSString stringWithFormat:@"%@", commandToRun],
+                          nil];
+    NSLog(@"run command: %@",commandToRun);
+    [task setArguments: arguments];
     
-    // This gets you something like:
-    //  /Users/nflacco/Projects/ios/alcatraz/FasterBuild/FasterBuild.xcodeproj
+    NSPipe *pipe;
+    pipe = [NSPipe pipe];
+    [task setStandardOutput: pipe];
     
-    return workspacePath;
+    NSFileHandle *file;
+    file = [pipe fileHandleForReading];
+    
+    [task launch];
+    
+    NSData *data;
+    data = [file readDataToEndOfFile];
+    
+    NSString *output;
+    output = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+    return output;
 }
 
 - (void)dealloc
