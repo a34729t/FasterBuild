@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		26ECA82419778C2A00D95CC0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 26ECA82319778C2900D95CC0 /* README.md */; };
+		26ECA82619778C3900D95CC0 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 26ECA82519778C3900D95CC0 /* LICENSE */; };
 		26F52E041974D2A700571884 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26F52E031974D2A700571884 /* AppKit.framework */; };
 		26F52E061974D2A700571884 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26F52E051974D2A700571884 /* Foundation.framework */; };
 		26F52E0C1974D2A700571884 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 26F52E0A1974D2A700571884 /* InfoPlist.strings */; };
@@ -14,6 +16,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		26ECA82319778C2900D95CC0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		26ECA82519778C3900D95CC0 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		26F52E001974D2A700571884 /* FasterBuild.xcplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FasterBuild.xcplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		26F52E031974D2A700571884 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		26F52E051974D2A700571884 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -40,6 +44,8 @@
 		26F52DF71974D2A700571884 = {
 			isa = PBXGroup;
 			children = (
+				26ECA82319778C2900D95CC0 /* README.md */,
+				26ECA82519778C3900D95CC0 /* LICENSE */,
 				26F52E071974D2A700571884 /* FasterBuild */,
 				26F52E021974D2A700571884 /* Frameworks */,
 				26F52E011974D2A700571884 /* Products */,
@@ -134,6 +140,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				26ECA82619778C3900D95CC0 /* LICENSE in Resources */,
+				26ECA82419778C2A00D95CC0 /* README.md in Resources */,
 				26F52E0C1974D2A700571884 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -282,6 +290,7 @@
 				26F52E151974D2A700571884 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
