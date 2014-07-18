@@ -3,6 +3,15 @@ FasterBuild
 
 XCode5 plugin to toggle speed up build time via a bunch of compile/debug options, inspired by a [blog post at Spotify](http://labs.spotify.com/2013/11/04/shaving-off-time-from-the-ios-edit-build-test-cycle/).
 
+### Instructions
+
+Clone the project, build it in Xcode 5 and restart Xcode. To get a newer version, you'll need to delete the plugin directory:
+
+    rm -rf /Users/$USER/Library/Application Support/Developer/Shared/Xcode/Plug-ins/FasterBuild.xcplugin
+
+PS: Once we have this in Alcatraz, you can just use that...
+
+
 ### Settings that are toggled
 
 The plugin calls a perl one liner to find and replace individual options:
