@@ -10,16 +10,13 @@
 
 #define FasterBuildKey @"FasterBuild"
 
-
-#define DEBUG_INFO_OFF              @"DEBUG_INFORMATION_FORMAT = \"dwarf\";"
-#define DEBUG_INFO_ON               @"DEBUG_INFORMATION_FORMAT = \"dwarf-with-dsym\";"
-
 static FasterBuild *sharedPlugin;
 
 @interface FasterBuild()
 
-@property (nonatomic, strong) NSBundle *bundle;
 @property (nonatomic, strong) NSMenuItem *actionMenuItem;
+@property (nonatomic, strong) NSBundle *bundle;
+@property (nonatomic, strong) NSString *workspacePath;
 
 @end
 
@@ -64,18 +61,18 @@ static FasterBuild *sharedPlugin;
 
 - (void)toggleFasterBuild
 {
-    NSString *workspacePath = [self currentProjectPath];
+    self.workspacePath = [self currentProjectPath];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     BOOL on = [userDefaults boolForKey:FasterBuildKey];
     
     if (!on) { // Starting state, turn on
         [userDefaults setBool:YES forKey:FasterBuildKey];
         self.actionMenuItem.title = @"Enable Fast Build";
-        [self lineItemReplace:DEBUG_INFO_OFF with:DEBUG_INFO_ON path:workspacePath];
+        [self toggleOptions:NO];
     } else {
         [userDefaults setBool:NO forKey:FasterBuildKey];
         self.actionMenuItem.title = @"Disable Fast Build";
-        [self lineItemReplace:DEBUG_INFO_ON with:DEBUG_INFO_OFF path:workspacePath];
+        [self toggleOptions:YES];
     }
     
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -98,11 +95,56 @@ static FasterBuild *sharedPlugin;
     return [[workSpace valueForKey:@"representingFilePath"] valueForKey:@"_pathString"];
 }
 
+#define DWARF   @"\"dwarf\""
+#define DWARF_DYSM   @"\"dwarf-with-dsym\""
 
-- (void)lineItemReplace:(NSString *)old with:(NSString *)new path:(NSString *)workspacePath
+- (void)toggleOptions:(BOOL)on
 {
+    // Non-Booleans
+    if (on) {
+        [self toggleItem:@"DEBUG_INFORMATION_FORMAT" valueNew:DWARF valueOld:DWARF_DYSM];
+    } else {
+        [self toggleItem:@"DEBUG_INFORMATION_FORMAT" valueNew:DWARF_DYSM valueOld:DWARF];
+    }
+    
+    // Boolean Optionscacaw
+
+    NSString *old;
+    NSString *new;
+    if (on) {
+        old = @"NO";
+        new = @"YES";
+    } else {
+        old = @"YES";
+        new = @"NO";
+    }
+    
+    [self toggleItem:@"RUN_CLANG_STATIC_ANALYZER" valueNew:new valueOld:old];
+    [self toggleItem:@"CLANG_ANALYZER_DEADCODE_DEADSTORES" valueNew:new valueOld:old];
+    [self toggleItem:@"CLANG_ANALYZER_GCD" valueNew:new valueOld:old];
+    [self toggleItem:@"CLANG_ANALYZER_MEMORY_MANAGEMENT" valueNew:new valueOld:old];
+    [self toggleItem:@"CLANG_ANALYZER_OBJC_ATSYNC" valueNew:new valueOld:old];
+    [self toggleItem:@"CLANG_ANALYZER_OBJC_COLLECTIONS" valueNew:new valueOld:old];
+    [self toggleItem:@"CLANG_ANALYZER_OBJC_INCOMP_METHOD_TYPES" valueNew:new valueOld:old];
+    [self toggleItem:@"CLANG_ANALYZER_OBJC_NSCFERROR" valueNew:new valueOld:old];
+    [self toggleItem:@"CLANG_ANALYZER_OBJC_RETAIN_COUNT" valueNew:new valueOld:old];
+    [self toggleItem:@"CLANG_ANALYZER_OBJC_SELF_INIT" valueNew:new valueOld:old];
+    [self toggleItem:@"CLANG_ANALYZER_OBJC_UNUSED_IVARS" valueNew:new valueOld:old];
+    [self toggleItem:@"CLANG_ANALYZER_SECURITY_INSECUREAPI_GETPW_GETS" valueNew:new valueOld:old];
+    [self toggleItem:@"CLANG_ANALYZER_SECURITY_INSECUREAPI_MKSTEMP" valueNew:new valueOld:old];
+    [self toggleItem:@"CLANG_ANALYZER_SECURITY_INSECUREAPI_UNCHECKEDRETURN" valueNew:new valueOld:old];
+    [self toggleItem:@"CLANG_ANALYZER_SECURITY_INSECUREAPI_VFORK" valueNew:new valueOld:old];
+    [self toggleItem:@"CLANG_ANALYZER_SECURITY_KEYCHAIN_API" valueNew:new valueOld:old];
+}
+
+- (void)toggleItem:(NSString *)item valueNew:(NSString *)valueNew valueOld:(NSString *)valueOld
+{
+
+    NSString *old = [NSString stringWithFormat:@"%@ = %@;", item, valueOld];
+    NSString *new = [NSString stringWithFormat:@"%@ = %@;", item, valueNew];
+
     // For example: perl -p -i -e 's/[OLD]/[NEW]/g' `find . -name *.pbxproj`
-    NSString *command = [NSString stringWithFormat:@"perl -p -i -e 's/%@/%@/g' `find %@ -name *.pbxproj`", old, new, workspacePath];
+    NSString *command = [NSString stringWithFormat:@"perl -p -i -e 's/%@/%@/g' `find %@ -name *.pbxproj`", old, new, self.workspacePath];
     [self runCommand:command];
 }
 
