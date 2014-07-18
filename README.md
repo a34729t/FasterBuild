@@ -19,6 +19,11 @@ PS: Once we have this in Alcatraz, you can just use that...
 The plugin calls a perl one liner to find and replace individual options:
 
     DEBUG_INFORMATION_FORMAT - Dwarf vs Dwarf with dsym
+
+### TODO
+
+Make the rest of these work:
+    
     RUN_CLANG_STATIC_ANALYZER
     CLANG_ANALYZER_DEADCODE_DEADSTORES
     CLANG_ANALYZER_GCD
