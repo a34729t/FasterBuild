@@ -16,7 +16,6 @@ static FasterBuild *sharedPlugin;
 
 @property (nonatomic, strong) NSMenuItem *actionMenuItem;
 @property (nonatomic, strong) NSBundle *bundle;
-@property (nonatomic, strong) NSString *workspacePath;
 
 @end
 
@@ -54,71 +53,57 @@ static FasterBuild *sharedPlugin;
         
         // Init menu
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:FasterBuildKey];
-        [self toggleFasterBuild];
+        self.actionMenuItem.title = @"Enable Fast Build";
     }
     return self;
 }
 
+#define FB_DWARF            @"\"dwarf\""
+#define FB_DWARF_DYSM       @"\"dwarf-with-dsym\""
+
+#define FB_SHALLOW          @"shallow"
+#define FB_DEEP             @"deep"
+// CLANG_STATIC_ANALYZER_MODE_ON_ANALYZE_ACTION
+
 - (void)toggleFasterBuild
 {
-    self.workspacePath = [self currentProjectPath];
+    // Handle switching state
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     BOOL on = [userDefaults boolForKey:FasterBuildKey];
     
-    if (!on) { // Starting state, turn on
-        [userDefaults setBool:YES forKey:FasterBuildKey];
-        self.actionMenuItem.title = @"Enable Fast Build";
-        [self toggleOptions:NO];
-    } else {
+    if (on) { // Turn off
         [userDefaults setBool:NO forKey:FasterBuildKey];
+        self.actionMenuItem.title = @"Enable Fast Build";
+    } else { // Starting state, turn on
+        [userDefaults setBool:YES forKey:FasterBuildKey];
         self.actionMenuItem.title = @"Disable Fast Build";
-        [self toggleOptions:YES];
     }
-    
     [[NSUserDefaults standardUserDefaults] synchronize];
-}
 
-- (NSString *)currentProjectPath
-{
-    // This gets you something like:
-    //  /Users/nflacco/Projects/ios/alcatraz/FasterBuild/FasterBuild.xcodeproj
-    // See http://stackoverflow.com/questions/21054699/get-the-path-of-current-project-opened-in-xcode-plugin
-    
-    NSArray *workspaceWindowControllers = [NSClassFromString(@"IDEWorkspaceWindowController") valueForKey:@"workspaceWindowControllers"];
-    id workSpace;
-    for (id controller in workspaceWindowControllers) {
-        if ([[controller valueForKey:@"window"] isEqual:[NSApp keyWindow]]) {
-            workSpace = [controller valueForKey:@"_workspace"];
-        }
-    }
+    // Now we've changed state, toggle options
+    on = !on;
 
-    return [[workSpace valueForKey:@"representingFilePath"] valueForKey:@"_pathString"];
-}
-
-#define DWARF   @"\"dwarf\""
-#define DWARF_DYSM   @"\"dwarf-with-dsym\""
-
-- (void)toggleOptions:(BOOL)on
-{
     // Non-Booleans
     if (on) {
-        [self toggleItem:@"DEBUG_INFORMATION_FORMAT" valueNew:DWARF valueOld:DWARF_DYSM];
+        [self toggleItem:@"DEBUG_INFORMATION_FORMAT" valueNew:FB_DWARF valueOld:FB_DWARF_DYSM];
+        [self toggleItem:@"CLANG_STATIC_ANALYZER_MODE_ON_ANALYZE_ACTION" valueNew:FB_SHALLOW valueOld:FB_DEEP];
     } else {
-        [self toggleItem:@"DEBUG_INFORMATION_FORMAT" valueNew:DWARF_DYSM valueOld:DWARF];
+        [self toggleItem:@"DEBUG_INFORMATION_FORMAT" valueNew:FB_DWARF_DYSM valueOld:FB_DWARF];
+        [self toggleItem:@"CLANG_STATIC_ANALYZER_MODE_ON_ANALYZE_ACTION" valueNew:FB_DEEP valueOld:FB_SHALLOW];
     }
-    
-    // Boolean Optionscacaw
 
+    /*
+    // Boolean Options
     NSString *old;
     NSString *new;
     if (on) {
-        old = @"NO";
-        new = @"YES";
-    } else {
         old = @"YES";
         new = @"NO";
+    } else {
+        old = @"NO";
+        new = @"YES";
     }
-    
+
     [self toggleItem:@"RUN_CLANG_STATIC_ANALYZER" valueNew:new valueOld:old];
     [self toggleItem:@"CLANG_ANALYZER_DEADCODE_DEADSTORES" valueNew:new valueOld:old];
     [self toggleItem:@"CLANG_ANALYZER_GCD" valueNew:new valueOld:old];
@@ -135,16 +120,18 @@ static FasterBuild *sharedPlugin;
     [self toggleItem:@"CLANG_ANALYZER_SECURITY_INSECUREAPI_UNCHECKEDRETURN" valueNew:new valueOld:old];
     [self toggleItem:@"CLANG_ANALYZER_SECURITY_INSECUREAPI_VFORK" valueNew:new valueOld:old];
     [self toggleItem:@"CLANG_ANALYZER_SECURITY_KEYCHAIN_API" valueNew:new valueOld:old];
+     */
 }
 
 - (void)toggleItem:(NSString *)item valueNew:(NSString *)valueNew valueOld:(NSString *)valueOld
 {
+    NSString *workspacePath = [self currentProjectPath];
 
     NSString *old = [NSString stringWithFormat:@"%@ = %@;", item, valueOld];
     NSString *new = [NSString stringWithFormat:@"%@ = %@;", item, valueNew];
 
     // For example: perl -p -i -e 's/[OLD]/[NEW]/g' `find . -name *.pbxproj`
-    NSString *command = [NSString stringWithFormat:@"perl -p -i -e 's/%@/%@/g' `find %@ -name *.pbxproj`", old, new, self.workspacePath];
+    NSString *command = [NSString stringWithFormat:@"perl -p -i -e 's/%@/%@/g' `find %@ -name *.pbxproj`", old, new, workspacePath];
     [self runCommand:command];
 }
 
@@ -178,6 +165,30 @@ static FasterBuild *sharedPlugin;
     NSString *output;
     output = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
     return output;
+}
+
+- (NSString *)currentProjectPath
+{
+    // 1) Get project path
+    // This gets you something like:
+    //  /Users/nflacco/Projects/ios/alcatraz/FasterBuild/FasterBuild.xcodeproj
+    // See http://stackoverflow.com/questions/21054699/get-the-path-of-current-project-opened-in-xcode-plugin
+
+    NSArray *workspaceWindowControllers = [NSClassFromString(@"IDEWorkspaceWindowController") valueForKey:@"workspaceWindowControllers"];
+    id workSpace;
+    for (id controller in workspaceWindowControllers) {
+        if ([[controller valueForKey:@"window"] isEqual:[NSApp keyWindow]]) {
+            workSpace = [controller valueForKey:@"_workspace"];
+        }
+    }
+
+    // 2) We want everything but the last element to get the root project folder
+    NSString *pathWithProject = [[workSpace valueForKey:@"representingFilePath"] valueForKey:@"_pathString"];
+    NSArray *splitPath = [pathWithProject componentsSeparatedByString:@"/"];
+    NSString *joinedString = [[splitPath subarrayWithRange:NSMakeRange(0, splitPath.count-2)] componentsJoinedByString:@"/"];
+    // NOTE: For our monster project, we have to do -2, because of our directory structure
+
+    return joinedString;
 }
 
 - (void)dealloc
