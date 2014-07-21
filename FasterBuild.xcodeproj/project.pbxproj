@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		26CF0991197CCBF8000FFA1D /* fasterbuild.rb in Resources */ = {isa = PBXBuildFile; fileRef = 26CF0990197CCBF8000FFA1D /* fasterbuild.rb */; };
 		26ECA82419778C2A00D95CC0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 26ECA82319778C2900D95CC0 /* README.md */; };
 		26ECA82619778C3900D95CC0 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 26ECA82519778C3900D95CC0 /* LICENSE */; };
 		26F52E041974D2A700571884 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26F52E031974D2A700571884 /* AppKit.framework */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		26CF0990197CCBF8000FFA1D /* fasterbuild.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = fasterbuild.rb; sourceTree = "<group>"; };
 		26ECA82319778C2900D95CC0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		26ECA82519778C3900D95CC0 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		26F52E001974D2A700571884 /* FasterBuild.xcplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FasterBuild.xcplugin; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,6 +46,7 @@
 		26F52DF71974D2A700571884 = {
 			isa = PBXGroup;
 			children = (
+				26CF0990197CCBF8000FFA1D /* fasterbuild.rb */,
 				26ECA82319778C2900D95CC0 /* README.md */,
 				26ECA82519778C3900D95CC0 /* LICENSE */,
 				26F52E071974D2A700571884 /* FasterBuild */,
@@ -141,6 +144,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				26ECA82619778C3900D95CC0 /* LICENSE in Resources */,
+				26CF0991197CCBF8000FFA1D /* fasterbuild.rb in Resources */,
 				26ECA82419778C2A00D95CC0 /* README.md in Resources */,
 				26F52E0C1974D2A700571884 /* InfoPlist.strings in Resources */,
 			);

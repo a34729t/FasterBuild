@@ -67,6 +67,22 @@ static FasterBuild *sharedPlugin;
 
 - (void)toggleFasterBuild
 {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSLocalDomainMask, YES);
+    NSString *applicationSupportDirectory = [NSString stringWithFormat:@"%@/Developer/Shared/Xcode/Plug-ins/FasterBuild.xcplugin/Contents/Resources", [paths firstObject]];
+    NSString *scriptAbsolutePath = [NSString stringWithFormat:@"~%@/fasterbuild.rb", applicationSupportDirectory];
+//    cscriptAbsolutePath = [scriptAbsolutePath stringByReplacingOccurrencesOfString:@" " withString:@"\\ "];
+    
+
+    
+    NSString *output = [self runCommand:[NSString stringWithFormat:@"/usr/bin/ruby %@", scriptAbsolutePath]];
+    
+    NSAlert *alert = [NSAlert alertWithMessageText:output defaultButton:nil alternateButton:nil otherButton:nil informativeTextWithFormat:@""];
+    [alert runModal];
+    
+    //               /Library/Application\ Support/Developer/Shared/Xcode/Plug-ins/FasterBuild.xcplugin/Contents/Resources/fasterbuild.rb
+    // /Users/nflacco/Library/Application Support/Developer/Shared/Xcode/Plug-ins
+    
+    /*
     // Handle switching state
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     BOOL on = [userDefaults boolForKey:FasterBuildKey];
@@ -91,6 +107,7 @@ static FasterBuild *sharedPlugin;
         [self toggleItem:@"DEBUG_INFORMATION_FORMAT" valueNew:FB_DWARF_DYSM valueOld:FB_DWARF];
         [self toggleItem:@"CLANG_STATIC_ANALYZER_MODE_ON_ANALYZE_ACTION" valueNew:FB_DEEP valueOld:FB_SHALLOW];
     }
+     */
 
     /*
     // Boolean Options
