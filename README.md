@@ -45,3 +45,8 @@ Make the rest of these work:
 
 * Nicolas Flacco (@nflacco)
 * Jordan Zucker
+
+### TODO
+
+* Recursive project file finding works
+* Need: Use xcodeproject parsing library to check if a line exists
